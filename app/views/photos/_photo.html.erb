@@ -1,0 +1,28 @@
+<div id="<%= dom_id photo %>">
+  <% image_url = photo.image.attached? ? url_for(photo.image) : "" %>
+  <% cropped_image_url = photo.cropped_image.attached? ? url_for(photo.cropped_image) : "" %>
+  <p>
+    <strong>Name:</strong>
+    <%= photo.name %>
+  </p>
+  <%= content_tag(:div, "", data: {
+    controller: "images",
+    images_url: image_url,
+    images_id: photo.id,
+  }, class: "container") do %>
+    <div class="image-container">
+      <%= image_tag(image_url, class: "image", id: "source", data: {
+        images_target: "source",
+      }) %>
+      <%= button_to "Crop", "#", data: {
+      action: "click->images#click",
+      images_target: "cropButton"
+      }, method: :get %>
+    </div>
+    <div class="image-container">
+      <%= image_tag(cropped_image_url, class: "image", id: "output", data: {
+      images_target: "output",
+      }) %>
+    </div>
+  <% end %>
+</div>
